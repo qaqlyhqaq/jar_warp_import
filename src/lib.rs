@@ -19,7 +19,7 @@ pub fn test_func(_env: JNIEnv, _class: JClass){
 // }
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn JNI_Onload<'local>(_env: JNIEnv<'local>, _class: JObject<'local>){
+pub unsafe extern "C" fn JNI_Onload<'local>(mut _env: JNIEnv<'local>,  _class: JObject<'local>){
     let fn_ptr = test_func;
 
     let nmd: jni::NativeMethod = jni::NativeMethod{
@@ -27,5 +27,8 @@ pub unsafe extern "C" fn JNI_Onload<'local>(_env: JNIEnv<'local>, _class: JObjec
         sig: JNIString::from("Ljava/lang/Void;"),
         fn_ptr: fn_ptr as *mut c_void
     };
-    JNIEnv::register_native_methods(&mut _env, _class, &[nmd]).expect("register_native_methods");
+
+    let global_ref:GlobalRef = _env.new_global_ref(_class).unwrap();
+
+    JNIEnv::register_native_methods(&mut _env, global_ref, &[nmd]).expect("register_native_methods");
 }

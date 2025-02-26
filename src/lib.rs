@@ -28,7 +28,7 @@ pub unsafe extern "C" fn JNI_Onload<'local>(mut _env: JNIEnv<'local>,  _class: J
         fn_ptr: fn_ptr as *mut c_void
     };
 
-    let global_ref:GlobalRef = _env.new_global_ref(_class).unwrap();
+    JNIEnv::register_native_methods(&mut _env, _class, &[nmd]).expect("register_native_methods");
 
-    JNIEnv::register_native_methods(&mut _env, global_ref, &[nmd]).expect("register_native_methods");
+
 }

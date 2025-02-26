@@ -3,6 +3,9 @@ name = "jarWarpImport"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+crate-type = ['cdylib']
+
 [dependencies]
-jni={version = "0.21.1"}
+jni={version = "0.21.1",features = ["libloading","default","java-locator"]}
 calamine = {git = "https://github.com/qaqlyhqaq/excel_file_import.git"}

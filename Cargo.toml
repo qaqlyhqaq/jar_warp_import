@@ -1,0 +1,8 @@
+[package]
+name = "jarWarpImport"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+jni={version = "0.21.1"}
+calamine = {git = "https://github.com/qaqlyhqaq/excel_file_import.git"}

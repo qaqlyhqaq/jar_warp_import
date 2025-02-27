@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         String thiz = "";
         InputStream in = thiz.getClass().getResourceAsStream("/lib/jarWarpImport.dll");
         if(in!=null) {
@@ -18,11 +18,14 @@ public class Main {
                 FileUtil.del(path);
             }
             System.out.println("/lib/jarWarpImport.dll:+"+in.available());
-            Assert.isNull(in);
+            Assert.isTrue(in!=null);
             Assert.isTrue(in.available()>0);
             FileUtil.writeFromStream(in,new File("jarWarpImport.dll"));
         }
+        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         XlsxParser parser = XlsxParser.build();
-        parser.call_func();
+        InputStream stream = classLoader.getResourceAsStream("/lib/jarWarpImport.dll");
+        parser.call_func(stream);
+        parser.nativeParseJ(stream);
     }
 }

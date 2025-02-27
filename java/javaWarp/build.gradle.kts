@@ -11,19 +11,7 @@ repositories {
     mavenCentral()
 }
 
-tasks.run {
-    systemProperty("java.library.path","E:\\rust\\jarWarpImport\\java\\javaWarp\\src\\main\\resources\\lib")
-}
 
-
-
-tasks.compileJava{
-    systemProperty("java.library.path","E:\\rust\\jarWarpImport\\java\\javaWarp\\src\\main\\resources\\lib")
-}
-
-tasks.test{
-    systemProperty("java.library.path","E:\\rust\\jarWarpImport\\java\\javaWarp\\src\\main\\resources\\lib")
-}
 
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))

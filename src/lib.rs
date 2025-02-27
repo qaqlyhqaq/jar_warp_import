@@ -15,16 +15,18 @@ pub fn Java_org_manta_ray_excel_XlsxParser_testFunc(_env: JNIEnv, _class: JClass
 
 #[unsafe(no_mangle)]
 #[allow(non_snake_case)]
-pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut _env: JNIEnv<'a>, _class: JClass, jobj: jni::objects::JByteArray<'a>){
+pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut _env: JNIEnv<'a>, _class: JClass<'a>, jByteArrayObject: JByteArray<'a>){
     //Ljava/io/InputStream;
 
-    let buf_size = _env.get_array_length(&jobj).unwrap();
+    let buf_size = _env.get_array_length(&jByteArrayObject).unwrap();
 
     let mut vec1:Vec<jbyte> = Vec::with_capacity(buf_size as usize);
 
     vec1.resize(buf_size as usize, 0);
 
-    _env.get_byte_array_region(jobj, buf_size, &mut *vec1).unwrap();
+    println!("vec1 size:{}", vec1.len());
+
+    _env.get_byte_array_region(jByteArrayObject, buf_size, &mut *vec1).expect("can't get byte array");
 
     let vec1:Vec<u8> = vec1.iter()
         .map(|&x| x as u8)

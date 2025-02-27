@@ -28,7 +28,8 @@ public class Main {
 //        in = thiz.getClass().getResourceAsStream("/lib/jarWarpImport.dll");
         in = FileUtil.getInputStream(new File("C:\\Users\\qaqly\\Desktop\\lyh-draft.xlsx"));
         byte[] bytes = IoUtil.readBytes(in);
-        parser.call_func(in);
+        System.out.println("bytes size:"+bytes.length);
+//        parser.call_func(in);
         parser.nativeParseJ(bytes);
     }
 }

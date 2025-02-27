@@ -2,6 +2,7 @@ package org.manta.ray.excel;
 
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * @author lyh
@@ -23,19 +24,21 @@ public class XlsxParser {
 
     static native void testFunc();
 
-    static native void nativeParse(byte[] byteArray);
+    static native Object nativeParse(byte[] byteArray);
 
     public void call_func(InputStream stream) {
         testFunc();
     }
 
     public void nativeParseJ(byte[] byteArray){
-        nativeParse(byteArray);
+        Object result = nativeParse(byteArray);
+        System.out.println("result:"+result);
     }
 
     private XlsxParser() {}
 
     static public XlsxParser build() {
+        ArrayList<XlsxParser> parsers = new ArrayList<XlsxParser>();
         return new XlsxParser();
     }
 }

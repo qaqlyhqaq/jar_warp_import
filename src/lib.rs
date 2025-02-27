@@ -20,6 +20,8 @@ pub unsafe extern "C" fn JNI_Onload<'local>(mut _env: JNIEnv<'local>,  _class: J
         fn_ptr: fn_ptr as *mut c_void
     };
 
+    println!("native method {}", fn_ptr as usize);
+    
     JNIEnv::register_native_methods(&mut _env, _class, &[nmd]).expect("register_native_methods");
 
 

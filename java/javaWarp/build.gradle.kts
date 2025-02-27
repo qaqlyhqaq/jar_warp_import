@@ -28,6 +28,7 @@ tasks.test{
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("cn.hutool:hutool-all:5.8.36")
 }
 
 tasks.test {

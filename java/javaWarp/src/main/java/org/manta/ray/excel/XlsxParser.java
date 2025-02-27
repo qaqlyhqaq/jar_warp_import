@@ -1,6 +1,8 @@
 package org.manta.ray.excel;
 
 
+import java.io.File;
+
 /**
  * @author lyh
  * @version 1.0.0
@@ -21,7 +23,6 @@ public class XlsxParser {
     static native void testFunc();
 
     public void call_func() {
-        System.out.println("call_func");
         testFunc();
     }
 

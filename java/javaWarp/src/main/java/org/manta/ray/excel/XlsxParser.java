@@ -1,6 +1,5 @@
 package org.manta.ray.excel;
 
-import java.io.InputStream;
 
 /**
  * @author lyh
@@ -10,12 +9,25 @@ import java.io.InputStream;
 public class XlsxParser {
 
     static {
-        System.loadLibrary("rust_java_demo");
+        try {
+            System.loadLibrary("jarWarpImport");
+        }catch (UnsatisfiedLinkError e) {
+            String property = System.getProperty("java.library.path");
+            System.err.println("java.library.path: " + property);
+            System.err.println("Native code library failed to load.\n" + e);
+        }
+    }
+
+    static native void testFunc();
+
+    public void call_func() {
+        System.out.println("call_func");
+        testFunc();
     }
 
     private XlsxParser() {}
 
-    public XlsxParser build(InputStream stream) {
+    static public XlsxParser build() {
         return new XlsxParser();
     }
 }

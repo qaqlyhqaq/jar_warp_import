@@ -2,6 +2,9 @@ use std::ffi::c_void;
 use jni::strings::JNIString;
 use jni::objects::*;
 use jni::JNIEnv;
+
+
+
 #[unsafe(no_mangle)]
 pub fn test_func(_env: JNIEnv, _class: JClass){
     println!("register_native_methods test_func")

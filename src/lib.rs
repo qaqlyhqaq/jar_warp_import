@@ -1,11 +1,10 @@
 #![feature(slice_as_array)]
 
-use std::io::{Read, Seek, SeekFrom};
+use calamine::Reader;
 use jni::objects::*;
+use jni::sys::jbyte;
 use jni::JNIEnv;
-use jni::sys::{jbyte, jsize};
 use std::io::Cursor;
-use calamine::{Reader, Xlsx};
 
 #[unsafe(no_mangle)]
 #[allow(non_snake_case)]
@@ -40,9 +39,6 @@ pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut _env: JNIEnv<'a>,
             print!("{}", cell);
         }
     });
-
-
-    println!("call native fun of native successfully !");
 }
 
 #[unsafe(no_mangle)]

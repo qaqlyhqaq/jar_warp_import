@@ -1,36 +1,11 @@
-use std::ffi::c_void;
+#![feature(slice_as_array)]
+
 use std::io::{Read, Seek, SeekFrom};
 use jni::objects::*;
 use jni::JNIEnv;
-use jni::sys::jsize;
-
-struct JavaInputStreamWrapper<'a> {
-    inner: JObject<'a>,
-    env: JNIEnv<'a>,
-}
-
-impl <'a> Read for JavaInputStreamWrapper<'a> {
-    fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
-        let buf_len:usize = buf.len();
-        if buf_len == 0 {
-            return Ok(0);
-        }
-        let array = self.env.new_byte_array(buf_len as jsize).unwrap();
-        let from = JValue::Object(&*array);
-        let value = self.env.call_method(&self.inner, "read", "([B)I", &[from]).unwrap();
-        let i = value.i().unwrap();
-        Ok(i as usize)
-    }
-}
-
-impl <'a> Seek for JavaInputStreamWrapper<'a> {
-    fn seek(&mut self, pos: SeekFrom) -> std::io::Result<u64> {
-        let value = self.env.call_method(&self.inner, "read", "([B)I", &[]).unwrap();
-
-        todo!()
-    }
-}
-
+use jni::sys::{jbyte, jsize};
+use std::io::Cursor;
+use calamine::{Reader, Xlsx};
 
 #[unsafe(no_mangle)]
 #[allow(non_snake_case)]
@@ -40,14 +15,33 @@ pub fn Java_org_manta_ray_excel_XlsxParser_testFunc(_env: JNIEnv, _class: JClass
 
 #[unsafe(no_mangle)]
 #[allow(non_snake_case)]
-pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut _env: JNIEnv<'a>, _class: JClass, jobj: jni::objects::JObject<'a>){
+pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut _env: JNIEnv<'a>, _class: JClass, jobj: jni::objects::JByteArray<'a>){
     //Ljava/io/InputStream;
 
-    // let wrapper = JavaInputStreamWrapper::from((jobj,&'a mut _env));
-    let wrapper = JavaInputStreamWrapper{
-        inner:jobj,
-        env: _env,
-    };
+    let buf_size = _env.get_array_length(&jobj).unwrap();
+
+    let mut vec1:Vec<jbyte> = Vec::with_capacity(buf_size as usize);
+
+    vec1.resize(buf_size as usize, 0);
+
+    _env.get_byte_array_region(jobj, buf_size, &mut *vec1).unwrap();
+
+    let vec1:Vec<u8> = vec1.iter()
+        .map(|&x| x as u8)
+        .collect();
+
+    let cursor:Cursor<Vec<u8>> = Cursor::new(vec1);
+    let mut xlsx = calamine::Xlsx::new(cursor).unwrap();
+
+    let range = xlsx.worksheet_range("").unwrap();
+
+    range.rows().for_each(|row| {
+        for cell in row {
+            print!("{}", cell);
+        }
+    });
+
+
     println!("call native fun of native successfully !");
 }
 

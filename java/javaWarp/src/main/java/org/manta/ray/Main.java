@@ -23,10 +23,10 @@ public class Main {
             FileUtil.del(path);
         }
         FileUtil.writeFromStream(in, new File("jarWarpImport.dll"));
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         XlsxParser parser = XlsxParser.build();
         in.close();
-        in = thiz.getClass().getResourceAsStream("/lib/jarWarpImport.dll");
+//        in = thiz.getClass().getResourceAsStream("/lib/jarWarpImport.dll");
+        in = FileUtil.getInputStream(new File("C:\\Users\\qaqly\\Desktop\\lyh-draft.xlsx"));
         byte[] bytes = IoUtil.readBytes(in);
         parser.call_func(in);
         parser.nativeParseJ(bytes);

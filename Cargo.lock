@@ -44,14 +44,13 @@ checksum = "f61dac84819c6588b558454b194026eb1f09c293b9036ae9b159e74e73ab6cf9"
 [[package]]
 name = "calamine"
 version = "0.26.1"
-source = "git+https://github.com/qaqlyhqaq/excel_file_import.git#791656a77c97c0132f26afc709668acc8054a991"
+source = "git+https://github.com/qaqlyhqaq/excel_file_import.git#94be96062ab125e6ea9fca9a0e3a0d794ab4ec72"
 dependencies = [
  "atoi_simd",
  "byteorder",
  "codepage",
  "encoding_rs",
  "fast-float2",
- "jni",
  "log",
  "quick-xml",
  "serde",

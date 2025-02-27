@@ -24,14 +24,14 @@ public class XlsxParser {
 
     static native void testFunc();
 
-    static native Object nativeParse(byte[] byteArray);
+    static native Object nativeParse(byte[] byteArray, String sheetName);
 
     public void call_func(InputStream stream) {
         testFunc();
     }
 
-    public void nativeParseJ(byte[] byteArray){
-        Object result = nativeParse(byteArray);
+    public void nativeParseJ(byte[] byteArray, String sheetName){
+        Object result = nativeParse(byteArray,sheetName);
         System.out.println("result:"+result);
     }
 

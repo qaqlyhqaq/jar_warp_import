@@ -2,7 +2,7 @@
 
 use calamine::Reader;
 use jni::objects::*;
-use jni::sys::jbyte;
+use jni::sys::{jbyte, jstring};
 use jni::JNIEnv;
 use std::io::Cursor;
 
@@ -14,7 +14,7 @@ pub fn Java_org_manta_ray_excel_XlsxParser_testFunc(_env: JNIEnv, _class: JClass
 
 #[unsafe(no_mangle)]
 #[allow(non_snake_case)]
-pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut env: JNIEnv<'a>, _class: JClass<'a>, jByteArrayObject: JByteArray<'a>) -> JObject<'a> {
+pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut env: JNIEnv<'a>, _class: JClass<'a>, jByteArrayObject: JByteArray<'a>,sheetName:JString<'a>) -> JObject<'a> {
     let buf_size = env.get_array_length(&jByteArrayObject).unwrap();
 
     let mut vec1:Vec<jbyte> = Vec::with_capacity(buf_size as usize);
@@ -28,7 +28,9 @@ pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut env: JNIEnv<'a>, 
     let cursor:Cursor<Vec<u8>> = Cursor::new(vec1);
     let mut xlsx = calamine::Xlsx::new(cursor).unwrap();
 
-    let range = xlsx.worksheet_range("1").expect("无法找到相关名称的sheet");
+    let sheet_name_java = env.get_string(&sheetName).unwrap();
+    let string = sheet_name_java.to_string_lossy().into_owned();
+    let range = xlsx.worksheet_range(string.as_str()).expect("无法找到相关名称的sheet");
 
     let listClass = env.find_class("java/util/ArrayList").unwrap();
     //总 list 对象

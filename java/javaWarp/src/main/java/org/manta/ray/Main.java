@@ -30,6 +30,6 @@ public class Main {
         byte[] bytes = IoUtil.readBytes(in);
         System.out.println("bytes size:"+bytes.length);
 //        parser.call_func(in);
-        parser.nativeParseJ(bytes);
+        parser.nativeParseJ(bytes,"1");
     }
 }

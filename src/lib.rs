@@ -22,15 +22,12 @@ pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut _env: JNIEnv<'a>,
 
     let mut vec1:Vec<jbyte> = Vec::with_capacity(buf_size as usize);
 
-    vec1.resize(buf_size as usize, 0);
+    vec1.resize(buf_size as usize + 1000, 0);
 
     println!("vec1 size:{}", vec1.len());
 
-    _env.get_byte_array_region(jByteArrayObject, buf_size, &mut *vec1).expect("can't get byte array");
-
-    let vec1:Vec<u8> = vec1.iter()
-        .map(|&x| x as u8)
-        .collect();
+    // _env.get_byte_array_region(jByteArrayObject, buf_size, &mut vec1).expect("can't get byte array");
+    let vec1 =  _env.convert_byte_array(jByteArrayObject).expect("can't convert byte array");
 
     let cursor:Cursor<Vec<u8>> = Cursor::new(vec1);
     let mut xlsx = calamine::Xlsx::new(cursor).unwrap();

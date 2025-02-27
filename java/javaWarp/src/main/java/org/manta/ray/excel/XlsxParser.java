@@ -23,14 +23,14 @@ public class XlsxParser {
 
     static native void testFunc();
 
-    static native void nativeParse(byte[] stream);
+    static native void nativeParse(byte[] byteArray);
 
     public void call_func(InputStream stream) {
         testFunc();
     }
 
-    public void nativeParseJ(byte[] stream){
-        nativeParse(stream);
+    public void nativeParseJ(byte[] byteArray){
+        nativeParse(byteArray);
     }
 
     private XlsxParser() {}

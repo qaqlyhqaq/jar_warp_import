@@ -32,7 +32,7 @@ pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut _env: JNIEnv<'a>,
     let cursor:Cursor<Vec<u8>> = Cursor::new(vec1);
     let mut xlsx = calamine::Xlsx::new(cursor).unwrap();
 
-    let range = xlsx.worksheet_range("").unwrap();
+    let range = xlsx.worksheet_range("1").unwrap();
 
     range.rows().for_each(|row| {
         for cell in row {

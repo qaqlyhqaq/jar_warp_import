@@ -45,17 +45,7 @@ pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut env: JNIEnv<'a>, 
         env.call_method(&listObject,  "add", "(Ljava/lang/Object;)Z",&[itemListObject]).unwrap();
     });
 
-
-    // let list_add_method = env.get_method_id(&listClass, "add", "(Ljava/lang/Object;)Z").unwrap();
-
-    let string = env.new_string("asdfasdf").unwrap();
-
-    let str_jvalue = JValue::Object(&*string);
-
-    env.call_method(&listObject,  "add", "(Ljava/lang/Object;)Z",&[str_jvalue]).unwrap();
-
-
-    return listObject;
+    listObject
 }
 
 #[unsafe(no_mangle)]

@@ -15,8 +15,6 @@ pub fn Java_org_manta_ray_excel_XlsxParser_testFunc(_env: JNIEnv, _class: JClass
 #[unsafe(no_mangle)]
 #[allow(non_snake_case)]
 pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut env: JNIEnv<'a>, _class: JClass<'a>, jByteArrayObject: JByteArray<'a>) -> JObject<'a> {
-    //Ljava/io/InputStream;
-
     let buf_size = env.get_array_length(&jByteArrayObject).unwrap();
 
     let mut vec1:Vec<jbyte> = Vec::with_capacity(buf_size as usize);
@@ -25,7 +23,6 @@ pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut env: JNIEnv<'a>, 
 
     println!("vec1 size:{}", vec1.len());
 
-    // _env.get_byte_array_region(jByteArrayObject, buf_size, &mut vec1).expect("can't get byte array");
     let vec1 =  env.convert_byte_array(jByteArrayObject).expect("can't convert byte array");
 
     let cursor:Cursor<Vec<u8>> = Cursor::new(vec1);
@@ -33,17 +30,22 @@ pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut env: JNIEnv<'a>, 
 
     let range = xlsx.worksheet_range("1").expect("无法找到相关名称的sheet");
 
-
+    let listClass = env.find_class("java/util/ArrayList").unwrap();
+    //总 list 对象
+    let listObject = env.new_object(&listClass, "()V", &[]).unwrap();
     range.rows().for_each(|row| {
+        let itemListObject = env.new_object(&listClass, "()V", &[]).unwrap();
         for cell in row {
-            print!("{}", cell);
+            let value = env.new_string(cell.to_string()).unwrap();
+            // print!("{}", cell);
+            let value = JValue::Object(&value);
+            env.call_method(&listObject,  "add", "(Ljava/lang/Object;)Z",&[value]).unwrap();
         }
+        let itemListObject = JValue::Object(&itemListObject);
+        env.call_method(&listObject,  "add", "(Ljava/lang/Object;)Z",&[itemListObject]).unwrap();
     });
 
-    //生成list 对象包装 解析结果
-    // let listClass = env.find_class("java/lang/String").unwrap();
-    let listClass = env.find_class("java/util/ArrayList").unwrap();
-    let listObject = env.new_object(&listClass, "()V", &[]).unwrap();
+
     // let list_add_method = env.get_method_id(&listClass, "add", "(Ljava/lang/Object;)Z").unwrap();
 
     let string = env.new_string("asdfasdf").unwrap();

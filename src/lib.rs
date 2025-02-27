@@ -2,7 +2,7 @@ use std::ffi::c_void;
 use std::io::{Read, Seek, SeekFrom};
 use jni::objects::*;
 use jni::JNIEnv;
-
+use jni::sys::jsize;
 
 struct JavaInputStreamWrapper<'a> {
     inner: JObject<'a>,
@@ -20,12 +20,17 @@ struct JavaInputStreamWrapper<'a> {
 
 impl <'a> Read for JavaInputStreamWrapper<'a> {
     fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
-        let buf_len = buf.len();
+        let buf_len:usize = buf.len();
         if buf_len == 0 {
             return Ok(0);
         }
-        let value = self.env.call_method(&self.inner, "read", "([b)I", &[]).unwrap();
-        todo!()
+
+        let array = self.env.new_byte_array(buf_len as jsize).unwrap();
+
+        let from = JValue::Object(&*array);
+        let value = self.env.call_method(&self.inner, "read", "([B)I", &[from]).unwrap();
+        let i = value.i().unwrap();
+        Ok(i as usize)
     }
 }
 

@@ -21,7 +21,7 @@ pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut env: JNIEnv<'a>, 
 
     let mut vec1:Vec<jbyte> = Vec::with_capacity(buf_size as usize);
 
-    vec1.resize(buf_size as usize + 1000, 0);
+    vec1.resize(buf_size as usize, 0);
 
     println!("vec1 size:{}", vec1.len());
 

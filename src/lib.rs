@@ -19,7 +19,7 @@ pub fn test_func(_env: JNIEnv, _class: JClass){
 // }
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn JNI_Onload<'local>(mut _env: JNIEnv<'local>,  _class: JObject<'local>){
+pub unsafe extern "C" fn JNI_Onload<'local>(mut _env: JNIEnv<'local>,  _class: JClass<'local>){
     let fn_ptr = test_func;
 
     let nmd: jni::NativeMethod = jni::NativeMethod{

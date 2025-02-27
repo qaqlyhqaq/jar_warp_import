@@ -9,24 +9,13 @@ struct JavaInputStreamWrapper<'a> {
     env: JNIEnv<'a>,
 }
 
-// impl<'a> From<( JObject<'a>,&'a mut JNIEnv<'a>)> for JavaInputStreamWrapper<'a>{
-//     fn from(value:(JObject<'a>,&'a mut JNIEnv<'a>)) -> Self {
-//         JavaInputStreamWrapper{
-//             inner: value.0,
-//             env: value.1
-//         }
-//     }
-// }
-
 impl <'a> Read for JavaInputStreamWrapper<'a> {
     fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
         let buf_len:usize = buf.len();
         if buf_len == 0 {
             return Ok(0);
         }
-
         let array = self.env.new_byte_array(buf_len as jsize).unwrap();
-
         let from = JValue::Object(&*array);
         let value = self.env.call_method(&self.inner, "read", "([B)I", &[from]).unwrap();
         let i = value.i().unwrap();
@@ -36,6 +25,8 @@ impl <'a> Read for JavaInputStreamWrapper<'a> {
 
 impl <'a> Seek for JavaInputStreamWrapper<'a> {
     fn seek(&mut self, pos: SeekFrom) -> std::io::Result<u64> {
+        let value = self.env.call_method(&self.inner, "read", "([B)I", &[from]).unwrap();
+
         todo!()
     }
 }

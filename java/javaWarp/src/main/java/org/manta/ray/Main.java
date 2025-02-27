@@ -8,6 +8,7 @@ import cn.hutool.core.stream.StreamUtil;
 import org.manta.ray.excel.XlsxParser;
 
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -24,9 +25,10 @@ public class Main {
         FileUtil.writeFromStream(in, new File("jarWarpImport.dll"));
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         XlsxParser parser = XlsxParser.build();
-        InputStream stream = classLoader.getResourceAsStream("/lib/jarWarpImport.dll");
-        byte[] bytes = IoUtil.readBytes(stream);
-        parser.call_func(stream);
+        in.close();
+        in = thiz.getClass().getResourceAsStream("/lib/jarWarpImport.dll");
+        byte[] bytes = IoUtil.readBytes(in);
+        parser.call_func(in);
         parser.nativeParseJ(bytes);
     }
 }

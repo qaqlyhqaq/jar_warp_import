@@ -25,7 +25,7 @@ impl <'a> Read for JavaInputStreamWrapper<'a> {
 
 impl <'a> Seek for JavaInputStreamWrapper<'a> {
     fn seek(&mut self, pos: SeekFrom) -> std::io::Result<u64> {
-        let value = self.env.call_method(&self.inner, "read", "([B)I", &[from]).unwrap();
+        let value = self.env.call_method(&self.inner, "read", "([B)I", &[]).unwrap();
 
         todo!()
     }

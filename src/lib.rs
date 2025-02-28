@@ -35,7 +35,7 @@ pub fn Java_org_manta_ray_excel_XlsxParser_nativeParse<'a>(mut env: JNIEnv<'a>, 
             let value = env.new_string(cell.to_string()).unwrap();
             // print!("{}", cell);
             let value = JValue::Object(&value);
-            env.call_method(&listObject,  "add", "(Ljava/lang/Object;)Z",&[value]).unwrap();
+            env.call_method(&itemListObject,  "add", "(Ljava/lang/Object;)Z",&[value]).unwrap();
         }
         let itemListObject = JValue::Object(&itemListObject);
         env.call_method(&listObject,  "add", "(Ljava/lang/Object;)Z",&[itemListObject]).unwrap();

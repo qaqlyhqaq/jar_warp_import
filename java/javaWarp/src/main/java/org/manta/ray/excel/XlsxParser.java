@@ -27,9 +27,10 @@ public class XlsxParser {
 
 
 
-    public void nativeParseJ(byte[] byteArray, String sheetName){
+    public Object nativeParseJ(byte[] byteArray, String sheetName){
         Object result = nativeParse(byteArray,sheetName);
         System.out.println("result:"+result);
+        return result;
     }
 
     private XlsxParser() {}
